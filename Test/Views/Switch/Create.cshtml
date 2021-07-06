@@ -1,0 +1,74 @@
+﻿@model CreateViewModel
+@{
+    ViewBag.Title = "Create new switch";
+}
+
+<form method="post" autocomplete="off">
+    <div asp-validation-summary="ModelOnly" class="validationError"></div>
+    <div class="form-row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="ModelName"></label>
+                <input asp-for="ModelName" class="form-control" />
+                <span asp-validation-for="ModelName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="IpAddress"></label>
+                <input asp-for="IpAddress" class="form-control" />
+                <span asp-validation-for="IpAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MacAddress"></label>
+                <input asp-for="MacAddress" class="form-control" />
+                <span asp-validation-for="MacAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ManagementVlan"></label>
+                <input asp-for="ManagementVlan" class="form-control" />
+                <span asp-validation-for="ManagementVlan" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SerialNumber"></label>
+                <input asp-for="SerialNumber" class="form-control" />
+                <span asp-validation-for="SerialNumber" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="InventoryNumber"></label>
+                <input asp-for="InventoryNumber" class="form-control" />
+                <span asp-validation-for="InventoryNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PurchaseDate"></label>
+                <input asp-for="PurchaseDate" class="form-control" />
+                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstallationDate"></label>
+                <input asp-for="InstallationDate" class="form-control" />
+                <span asp-validation-for="InstallationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InstallationFloor"></label>
+                <select asp-for="InstallationFloor" asp-items="@new SelectList(SwitchController.Floors)" class="form-control">
+                    <option value="">not installed</option>
+                </select>
+                <span asp-validation-for="InstallationFloor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Comment"></label>
+                <textarea asp-for="Comment" class="form-control" rows="3"></textarea>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary">Добавить</button>
+        <a asp-action="@nameof(SwitchController.Index)" class="btn btn-secondary ml-2">Отмена</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

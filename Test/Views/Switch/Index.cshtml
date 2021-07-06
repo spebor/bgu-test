@@ -1,0 +1,85 @@
+﻿@model IndexViewModel
+@{
+    ViewBag.Title = "Switches";
+}
+
+<a asp-action="@nameof(SwitchController.Create)" class="btn btn-primary mb-3">Добавить</a>
+
+<form method="post" autocomplete="off" id="Filter">
+    <div class="form-row">
+        <div class="col-md form-group">
+            <label asp-for="Filter.Query"></label>
+            <div class="input-group">
+                <input asp-for="Filter.Query" class="form-control" placeholder="Модель, серийный или инвентарный номер" />
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-secondary">Найти</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 form-group">
+            <label asp-for="Filter.InstallationFloor"></label>
+            <select asp-for="Filter.InstallationFloor" asp-items="@new SelectList(SwitchController.Floors)" onchange="this.form.submit()" class="form-control">
+                <option value="">Все</option>
+            </select>
+        </div>
+
+        <input id="PageIndex" name="PageIndex" type="hidden" />
+        <div class="col-md-2 form-group">
+            <label for="PageSize">Показывать по</label>
+            <select id="PageSize" name="PageSize" asp-items="@new SelectList(Enumerable.Range(1, 10), Model.Items.PageSize)" onchange="this.form.submit()" class="form-control"></select>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Items.FirstOrDefault().Id)</th>
+            <th>@Html.DisplayNameFor(m => m.Items.FirstOrDefault().ModelName)</th>
+            <th>@Html.DisplayNameFor(m => m.Items.FirstOrDefault().InstallationFloor)</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.ModelName</td>
+                <td>@item.InstallationFloor</td>
+                <td>
+                    <a asp-action="@nameof(SwitchController.Edit)" asp-route-id="@item.Id">Изменить</a>
+                    <a asp-action="@nameof(SwitchController.Remove)" asp-route-id="@item.Id" onclick="return confirm('Удалить запись?')" class="ml-2">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@if (Model.Items.TotalPages > 1)
+{
+    <nav>
+        <ul class="pagination">
+            @for (var n = 1; n <= Model.Items.TotalPages; n++)
+            {
+                <li class="page-item @(Model.Items.PageIndex == n ? "active": "")">
+                    <a href="#" class="page-link" data-page-index="@n">@n</a>
+                </li>
+            }
+        </ul>
+    </nav>
+}
+
+@section Scripts {
+    <script>
+        $(document).on('click', '.pagination .page-link', function (e) {
+            e.preventDefault();
+
+            let idx = $(this).data('page-index');
+            if (idx) {
+                $('#PageIndex').val(idx);
+                $('#Filter').submit();
+            }
+        });
+    </script>
+}
